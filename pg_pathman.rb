@@ -10,15 +10,6 @@ class PgPathman < Formula
 
   depends_on "postgresql"
 
-  plist_options :manual => <<-EOS.undent
-    Modify shared_preload_libraries = 'pg_pathman'
-
-      pgconfig.conf (#{PG_CONF})
-
-    And restart server
-        pg_ctl restart -D #{PG_DIR}
-  EOS
-
   def install
     ENV["PG_CONFIG"] = "#{Formula['postgresql'].opt_bin}/pg_config"
 
@@ -36,7 +27,7 @@ class PgPathman < Formula
 
       You can either use echo to add or update it manualy:
 
-        echo "shared_preload_libraries = 'pg_pathman'" >> #{PG_CONF}
+        sed -i '' -e "s/#shared_preload_libraries = ''/shared_preload_libraries = 'pg_pathman'/g" #{PG_CONF}"
 
       And restart postgres
 
